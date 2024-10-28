@@ -5,7 +5,7 @@
         @csrf
         <div class="card-body">
             <div class="form-group">
-                <label>Tên danh mục</label>
+                <label>Tên sản phẩm</label>
                 <input type="text" class="form-control" name="name" placeholder="Enter name">
             </div>
             {{-- <div class="form-group">
@@ -13,13 +13,21 @@
                 <input type="text" class="form-control" placeholder="Enter name">
             </div> --}}
             <div class="form-group">
-                <label>Danh mục cha</label>
-                <select class="form-control" name="parent_id">
+                <label>Danh mục</label>
+                <select class="form-control" name="menu_id">
                     <option value="0" selected>Chọn 1 danh mục</option>
                     @foreach($menus as $menu)
                     <option value="{{ $menu->id }}">{{ $menu->name }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
+                <label>Giá bán</label>
+                <input type="text" class="form-control" name="price_sale" placeholder="Nhập Giá bán">
+            </div>
+            <div class="form-group">
+                <label>Giá gốc</label>
+                <input type="text" class="form-control" name="price" placeholder="Nhập Giá gốc">
             </div>
             <div class="form-group">
                 <label>Mô tả ngắn</label>
@@ -28,6 +36,12 @@
             <div class="form-group">
                 <label>Mô tả chi tiết</label>
                 <textarea class="form-control" name="content" id="editor1"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Hình ảnh</label>
+                <input type="file" class="form-control" id="upload">
+                <div id="image-show"></div>  
+                <input type="hidden" class="form-control" name="thumb" id="thumb">
             </div>
             <div class="form-group">
                 <label>Kích hoạt</label>
