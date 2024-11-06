@@ -21,4 +21,9 @@ class Product extends Model
         'slug',
         'active',
     ];
+
+    public function menu()
+    {
+        return $this->hasOne(Menu::class, 'id', 'menu_id');
+    }
 }

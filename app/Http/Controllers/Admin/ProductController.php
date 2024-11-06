@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Services\Product\ProductAdminService;
 use App\Http\Requests\Product\ProductRequest;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -20,7 +21,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.product.list', [
+            'title' => 'Danh sách sản phẩm',
+            'products' => $this->productAdminService->get(),
+        ]);
     }
 
     /**
@@ -47,9 +51,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return view('admin.product.edit', [
+            'title' => 'Cập nhật sản phẩm ' . $product->name,
+            'product' => $product,
+            'menus' => $this->productAdminService->getMenu(),
+        ]);
     }
 
     /**
@@ -63,16 +71,25 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Product $product, ProductRequest $request)
     {
-        //
+        $result = $this->productAdminService->update($product, $request);
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $result = $this->productAdminService->delete($request);
+        if($result){
+            return response()->json([
+                'error' => false,
+                'message' => 'Xóa sản phẩm thành công.',
+            ]);
+        }
+
+        return response()->json(['error' => true]);
     }
 }

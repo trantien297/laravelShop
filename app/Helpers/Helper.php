@@ -39,4 +39,9 @@ class Helper
 	{
 		return ($active == 1) ? '<span class="btn btn-success btn-xs">YES</span>' : '<span class="btn btn-danger btn-xs">NO</span>';
 	}
+
+	public static function formatPrice($price, $unit='')
+	{
+		return number_format($price, 0, '.', '.').$unit;
+	}
 }

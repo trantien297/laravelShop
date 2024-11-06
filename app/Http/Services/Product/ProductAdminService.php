@@ -62,4 +62,47 @@ class ProductAdminService
 
 		return true;
 	}
+
+	public function get()
+	{
+		return Product::
+			with('menu')
+			->orderbyDESC('id')->paginate(20);
+	}
+
+	public function update($product, $request)
+	{
+		$isValidPrice = $this->isValidPrice($request);
+		if($isValidPrice == false) return false;
+
+		try{
+			$product->name = (string) $request->input('name');
+			$product->description = (string) $request->input('description');
+			$product->content = (string) $request->input('content');
+			$product->menu_id = (int) $request->input('menu_id');
+			$product->price = (int) $request->input('price');
+			$product->price_sale = (int) $request->input('price_sale');
+			$product->active = (int) $request->input('active');
+			$product->thumb = (string) $request->input('thumb');
+			$product->slug = Str::of($request->input('name'))->slug('-');
+			$product->save();
+
+			Session::flash('success', 'Đã cập nhật sản phẩm thành công!');
+		} catch(\Exception $err){
+			Session::flash('error', $err->getMessage());
+			\Log::info($err->getMessage());
+			return  false;
+		}
+		return true;
+	}
+
+	public function delete($request)
+	{
+		$product = Product::where('id', $request->input('id'))->first();
+		if($product){
+			$product->delete();
+			return true;
+		}
+		return false;
+	}
 }
